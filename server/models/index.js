@@ -9,6 +9,7 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
+// 현재 실행 환경의 설정으로 Sequelize 연결을 구성합니다.
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
@@ -16,6 +17,7 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
+// models 디렉터리의 모델 파일을 찾아 Sequelize에 등록합니다.
 fs
   .readdirSync(__dirname)
   .filter(file => {
