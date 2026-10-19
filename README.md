@@ -16,8 +16,6 @@ React 클라이언트와 Express 서버로 구성할 예정인 프로젝트입�
   - Sequelize 기본 `id`, `createdAt`, `updatedAt` 필드
 - 모델은 `server/models` 디렉터리에서 자동으로 로드됩니다.
 
-React 클라이언트는 아직 구현되어 있지 않습니다.
-
 ## 기술 스택
 
 - Node.js
