@@ -22,10 +22,17 @@ function CreatePost() {
         username: Yup.string().min(3).max(15).required()
     }); 
 
-    // 게시글 생성 요청이 성공하면 홈 화면으로 돌아갑니다.
-    const onSubmit = (data) => {
+    
+    /**
+     * 게시글 생성을 확인하고 서버에 저장한 뒤 메인 페이지로 이동합니다.
+     * 취소하면 입력 폼을 초기화합니다.
+     */
+    const onSubmit = (data, { resetForm }) => {
+        if (!window.confirm("Create this post?")) {
+            resetForm();
+            return;
+        }
         axios.post('http://localhost:3001/posts', data).then(response => {
-            console.log("It Worked!");
             history.push("/");
         });
     }

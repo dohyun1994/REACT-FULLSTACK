@@ -9,6 +9,14 @@ router.get("/", async (req, res) => {
   res.json(listOfPosts);
 });
 
+
+// 특정 게시글을 ID로 조회하여 반환합니다.
+router.get("/byId/:id", async (req, res) => {
+    const id = req.params.id;
+    const post = await Posts.findByPk(id);
+    res.json(post);
+});
+
 // 요청 본문을 새 게시글로 저장하고 생성 데이터를 반환합니다.
 router.post("/", async (req, res) => {
     const post = req.body;
@@ -16,5 +24,7 @@ router.post("/", async (req, res) => {
     res.json(post);
   
 });
+
+
 
 module.exports = router;

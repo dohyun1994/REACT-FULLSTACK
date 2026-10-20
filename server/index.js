@@ -11,7 +11,13 @@ const db  = require("./models");
 // 게시글 API를 /posts 경로에 연결합니다.
 const postRouter = require("./routes/Posts");
 
+// 댓글 API /comments 경로에 연결합니다.
+const commentRouter = require("./routes/Comments");
+
+
 app.use("/posts", postRouter);
+
+app.use("/comments", commentRouter);
 
 // 데이터베이스 모델 동기화가 끝난 뒤 API 서버를 시작합니다.
 db.sequelize.sync().then(() => {
