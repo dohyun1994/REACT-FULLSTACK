@@ -6,19 +6,41 @@ import axios from 'axios';
 function Post() {
     let { id } = useParams(); // URL에서 id를 가져옵니다.
     const [postObject, setPostObject] = useState({});
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState("");
 
-    // 게시글 ID가 정해진 뒤 상세 API에서 해당 게시글을 불러옵니다.
+    // 게시글 ID에 해당하는 상세 정보와 댓글 목록을 불러옵니다.
     useEffect(() => {
-        // id를 사용하여 서버에서 특정 게시글을 가져옵니다.
         axios.get(`http://localhost:3001/posts/byId/${id}`)
             .then(response => {
-                // 게시글 데이터를 상태에 저장합니다.
                 setPostObject(response.data);
             })
             .catch(error => {
                 console.error('Error fetching post:', error);
             });
-    }, []);
+
+        axios.get(`http://localhost:3001/comments/${id}`)
+            .then(response => {
+                setComments(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching comments:', error);
+            });
+    }, [id]);
+
+    // 현재 게시글에 새 댓글을 저장하고 화면의 댓글 목록을 갱신합니다.
+    const addComment = () => {
+        axios
+        .post("http://localhost:3001/comments", {
+            commentBody: newComment,
+            PostId: id,
+        })
+        .then((response) => {
+            const commentToAdd = { commentBody: newComment };
+            setComments([...comments, commentToAdd]);
+            setNewComment("");
+        });
+    };
 
     return (
         <div className="postPage">
@@ -29,7 +51,29 @@ function Post() {
                     <div className="footer">{postObject.username}</div>
                 </div>
             </div>
-            <div className="rightSide">Comment Section</div>
+            <div className="rightSide">
+                <div className="addCommentContainer">
+                    <input
+                        type="text"
+                        placeholder="Comment..."
+                        autoComplete="off"
+                        value={newComment}
+                        onChange={(event) => {
+                        setNewComment(event.target.value);
+                        }}
+                    />
+                    <button onClick={addComment}> Add Comment</button>
+                </div>
+                <div className="listOfComments">
+                    {comments.map((comment, key) => {
+                        return (
+                        <div key={key} className="comment">
+                            {comment.commentBody}
+                        </div>
+                        );
+                    })}
+                </div>
+            </div>
         </div>
     );
 }

@@ -57,7 +57,7 @@ body {
 }
 
 
-/* CREATE POST PAGE CSS */
+/* 게시글 작성 폼의 배치와 입력 컨트롤 스타일 */
 
 .createPostPage {
   font-family: Arial, Helvetica, sans-serif;
@@ -107,7 +107,7 @@ span {
   color: red;
 }
 
-/* NAVBAR */
+/* 페이지 상단 내비게이션 스타일 */
 
 .navbar {
   width: 100%;
@@ -124,7 +124,7 @@ span {
   color: white;
 }
 
-/* INDIVIDUAL POST */
+/* 게시글 상세 화면과 댓글 영역 스타일 */
 .postPage {
   display: flex;
   flex-direction: row;
@@ -146,6 +146,48 @@ span {
   place-items: center;
 }
 
+.rightSide .addCommentContainer {
+  flex: 20%;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  margin-top: 25px;
+}
+
+.addCommentContainer input,
+button {
+  width: 200px;
+  height: 50px;
+  border-radius: 8px;
+  border: none;
+}
+
+.addCommentContainer button {
+  background-color: dodgerblue;
+  color: white;
+}
+
+.addCommentContainer input {
+  border: 2px solid dodgerblue;
+}
+
+.rightSide .listOfComments {
+  flex: 80%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.listOfComments .comment {
+  width: 70%;
+  height: auto;
+  padding: 30px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
 #individual {
   height: 500px;
   width: 600px;
@@ -158,4 +200,34 @@ span {
 
 #individual .body {
   font-size: 25px;
+}
+
+
+/* 로그인 화면의 입력 폼 스타일 */
+
+.loginContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  padding-top: 100px;
+}
+
+.loginContainer input,
+button {
+  width: 200px;
+  height: 50px;
+  border-radius: 8px;
+  border: none;
+  margin: 10px;
+}
+
+.loginContainer button {
+  background-color: dodgerblue;
+  color: white;
+}
+
+.loginContainer input {
+  border: 2px solid dodgerblue;
 }
