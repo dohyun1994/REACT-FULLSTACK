@@ -28,17 +28,31 @@ function Post() {
             });
     }, [id]);
 
-    // 현재 게시글에 새 댓글을 저장하고 화면의 댓글 목록을 갱신합니다.
+    // JWT와 함께 댓글을 요청하고 성공하면 서버가 돌려준 댓글 작성자 정보로 목록을 갱신합니다.
     const addComment = () => {
         axios
         .post("http://localhost:3001/comments", {
             commentBody: newComment,
             PostId: id,
-        })
+        },
+        {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        }
+        )
         .then((response) => {
-            const commentToAdd = { commentBody: newComment };
-            setComments([...comments, commentToAdd]);
-            setNewComment("");
+            if (response.data.error) {
+                alert(response.data.error);
+            } else {
+
+                const commentToAdd = {
+                    commentBody: newComment,
+                    username: response.data.username
+                };
+                setComments([...comments, commentToAdd]);
+                setNewComment("");
+            }
         });
     };
 
@@ -69,6 +83,7 @@ function Post() {
                         return (
                         <div key={key} className="comment">
                             {comment.commentBody}
+                            <label> Username: {comment.username}</label>
                         </div>
                         );
                     })}

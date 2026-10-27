@@ -3,6 +3,9 @@ const router = express.Router();
 const { Users } = require("../models");
 const bcrypt = require("bcrypt");
 
+const { validateToken } = require("../middlewares/AuthMiddleware");
+const { sign } = require("jsonwebtoken");
+
 // 회원가입 요청의 비밀번호를 해시한 뒤 사용자 계정을 생성합니다.
 router.post("/", async (req, res) => {
   const { username, password } = req.body;
@@ -16,7 +19,7 @@ router.post("/", async (req, res) => {
   });
 });
 
-// 사용자 이름으로 계정을 찾고 입력한 비밀번호를 저장된 해시와 비교합니다.
+// 사용자 자격 증명을 확인하고 성공하면 인증용 JWT를 발급합니다.
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -27,8 +30,17 @@ router.post("/login", async (req, res) => {
   bcrypt.compare(password, user.password).then((match) => {
     if (!match) res.json({ error: "Wrong Username And Password Combination" });
 
-    res.json("YOU LOGGED IN!!!");
+    const accessToken = sign(
+      { username: user.username, id: user.id },
+      "importantsecret"
+    );
+    res.json(accessToken);
   });
+});
+
+// 요청의 JWT를 검증한 사용자 정보를 클라이언트에 반환합니다.
+router.get("/auth", validateToken, (req, res) => {
+  res.json(req.user);
 });
 
 module.exports = router;

@@ -3,7 +3,6 @@
   height: auto;
   display: flex;
   align-items: center;
-  padding-top: 40px;
   flex-direction: column;
 }
 
@@ -56,8 +55,7 @@ body {
   border-bottom-right-radius: 10px;
 }
 
-
-/* 게시글 작성 폼의 배치와 입력 컨트롤 스타일 */
+/* CREATE POST PAGE CSS */
 
 .createPostPage {
   font-family: Arial, Helvetica, sans-serif;
@@ -67,7 +65,6 @@ body {
   justify-content: center;
   align-items: center;
 }
-
 .formContainer {
   display: flex;
   flex-direction: column;
@@ -107,7 +104,7 @@ span {
   color: red;
 }
 
-/* 페이지 상단 내비게이션 스타일 */
+/* NAVBAR */
 
 .navbar {
   width: 100%;
@@ -124,7 +121,7 @@ span {
   color: white;
 }
 
-/* 게시글 상세 화면과 댓글 영역 스타일 */
+/* INDIVIDUAL POST */
 .postPage {
   display: flex;
   flex-direction: row;
@@ -144,6 +141,8 @@ span {
   height: calc(100vh - 70px);
   display: grid;
   place-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .rightSide .addCommentContainer {
@@ -202,8 +201,7 @@ button {
   font-size: 25px;
 }
 
-
-/* 로그인 화면의 입력 폼 스타일 */
+/* LOGIN */
 
 .loginContainer {
   display: flex;
