@@ -2,9 +2,15 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import {useHistory} from "react-router-dom";
+
+
 
 // 회원가입 폼의 입력값 검증과 계정 생성 요청을 담당합니다.
 function Registration() {
+
+  const history = useHistory();
+
   const initialValues = {
     username: "",
     password: "",
@@ -21,6 +27,7 @@ function Registration() {
     axios.post("http://localhost:3001/auth", data).then(() => {
       console.log(data);
     });
+    history.push("/login");
   };
 
   return (

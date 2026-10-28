@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-
 const { Comments } = require("../models");
 const { validateToken } = require("../middlewares/AuthMiddleware");
+
 
 // 게시글 ID로 해당 게시글에 연결된 댓글 목록을 반환합니다.
 router.get("/:postId", async (req, res) => {
@@ -18,6 +18,19 @@ router.post("/", validateToken, async (req, res) => {
     comment.username = username;
     await Comments.create(comment);
     res.json(comment);
+});
+
+// JWT를 확인한 뒤 경로의 댓글 ID에 해당하는 댓글을 삭제합니다.
+router.delete("/:commentId", validateToken, async (req, res) => {
+    console.log("DELETE request received for commentId:", req.params.commentId);
+    const commentId = req.params.commentId;
+
+    await Comments.destroy({
+        where: {
+            id: commentId
+        },
+    });
+    res.json("DELETED SUCCESSFULLY");
 });
 
 module.exports = router;

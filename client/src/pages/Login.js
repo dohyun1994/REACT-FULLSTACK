@@ -22,9 +22,13 @@ function Login() {
         alert(response.data.error);
 
       } else {
-        localStorage.setItem("accessToken", response.data);
+        localStorage.setItem("accessToken", response.data.token);
         alert("로그인 성공!");
-        setAuthState(true);
+        setAuthState({
+          username: response.data.username,
+          id: response.data.id,
+          status: true,
+        });
         history.push("/");
       }
     });

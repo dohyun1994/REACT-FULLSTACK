@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from 'react'
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState, useContext } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { AuthContext } from "../helpers/AuthContext";
 
-// URL의 게시글 ID로 게시글 정보를 조회해 상세 화면에 표시합니다.
 function Post() {
-    let { id } = useParams(); // URL에서 id를 가져옵니다.
-    const [postObject, setPostObject] = useState({});
-    const [comments, setComments] = useState([]);
-    const [newComment, setNewComment] = useState("");
+  let { id } = useParams();
+  const [postObject, setPostObject] = useState({});
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const { authState } = useContext(AuthContext);
 
     // 게시글 ID에 해당하는 상세 정보와 댓글 목록을 불러옵니다.
     useEffect(() => {
@@ -56,41 +57,65 @@ function Post() {
         });
     };
 
+    // 로그인 토큰으로 댓글 삭제를 요청하고 성공하면 화면 목록에서도 제거합니다.
+    const deleteComment = (id) => {
+    axios
+      .delete(`http://localhost:3001/comments/${id}`, {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      })
+      .then(() => {
+        setComments(
+          comments.filter((val) => {
+            return val.id != id;
+          })
+        );
+      });
+    };
+
     return (
         <div className="postPage">
-            <div className="leftSide">
-                <div className="post" id="individual">
-                    <div className="title"> {postObject.title} </div>
-                    <div className="body">{postObject.postText}</div>
-                    <div className="footer">{postObject.username}</div>
-                </div>
-            </div>
-            <div className="rightSide">
-                <div className="addCommentContainer">
-                    <input
-                        type="text"
-                        placeholder="Comment..."
-                        autoComplete="off"
-                        value={newComment}
-                        onChange={(event) => {
-                        setNewComment(event.target.value);
-                        }}
-                    />
-                    <button onClick={addComment}> Add Comment</button>
-                </div>
-                <div className="listOfComments">
-                    {comments.map((comment, key) => {
-                        return (
-                        <div key={key} className="comment">
-                            {comment.commentBody}
-                            <label> Username: {comment.username}</label>
-                        </div>
-                        );
-                    })}
-                </div>
+        <div className="leftSide">
+            <div className="post" id="individual">
+            <div className="title"> {postObject.title} </div>
+            <div className="body">{postObject.postText}</div>
+            <div className="footer">{postObject.username}</div>
             </div>
         </div>
-    );
+        <div className="rightSide">
+            <div className="addCommentContainer">
+            <input
+                type="text"
+                placeholder="Comment..."
+                autoComplete="off"
+                value={newComment}
+                onChange={(event) => {
+                setNewComment(event.target.value);
+                }}
+            />
+            <button onClick={addComment}> Add Comment</button>
+            </div>
+            <div className="listOfComments">
+            {comments.map((comment, key) => {
+                return (
+                <div key={key} className="comment">
+                    {comment.commentBody}
+                    <label> Username: {comment.username}</label>
+                    {authState.username === comment.username && (
+                    <button
+                        onClick={() => {
+                        deleteComment(comment.id);
+                        }}
+                    >
+                        X
+                    </button>
+                    )}
+                </div>
+                );
+            })}
+            </div>
+        </div>
+        </div>
+  );
 }
 
 export default Post

@@ -11,12 +11,11 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  // Users.associate = (models) => {
-  //   Users.hasMany(models.Posts, {
-  //     onDelete: "cascade",
-  //   });
-  // }
+  Users.associate = (models) => {
+    Users.hasMany(models.Likes, {
+        onDelete: "CASCADE", // 사용자가 삭제될 때 관련된 좋아요도 함께 삭제되도록 설정합니다.
+    });
 
-
+  }
   return Users;
 }

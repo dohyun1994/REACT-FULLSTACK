@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-const { Posts } = require("../models");
+const { Posts, Likes } = require("../models");
 
 // 데이터베이스에 저장된 게시글 전체를 반환합니다.
 router.get("/", async (req, res) => {
-  const listOfPosts = await Posts.findAll();
+  // 좋아요 연관 데이터를 포함해 게시글 목록을 조회합니다.
+  const listOfPosts = await Posts.findAll({include : [Likes]});
   res.json(listOfPosts);
 });
 
